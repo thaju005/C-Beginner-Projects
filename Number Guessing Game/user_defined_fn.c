@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-char lin_getch() {
+int lin_getch() {
     struct termios old_settings, new_settings;
     char ch;
     // Save current terminal settings
@@ -24,7 +24,7 @@ char lin_getch() {
 }
 
 int init_game(){
-    int random_num,min=1,max=100,guess;
+    int random_num,min=1,max=100;
     char ch;
     srand(time(NULL));    
     printf("##########  Number Guessing Game  ##########\n");
@@ -38,8 +38,8 @@ int init_game(){
         printf("Enter new max : ");
         scanf("%d",&max);
         if(min > max){
-            printf("Invalid range");
-            return 0;
+            printf("Invalid range\n");
+            exit(1);
         }
     }
 
@@ -51,7 +51,11 @@ void find_random(int random_num){
     int guess;
     do{
         printf("Enter number : ");
-        scanf("%d",&guess);
+        while(scanf("%d",&guess) != 1){
+            printf("Invalid input, Enter a number : ");
+            while(getchar() != '\n')
+                continue;
+        }
         if(guess < random_num){
             printf("Too low, Try again\n");
         }else if(guess > random_num){
