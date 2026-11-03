@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define SCORE_FILE "data.txt"
+#define SCORE_FMT "best score : %d"
+
 int lin_getch() {
     struct termios old_settings, new_settings;
     char ch;
@@ -17,17 +20,49 @@ int lin_getch() {
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
     printf("Press any key: ");
     // Read one character immediately
+    while(getchar() != '\n'){
+        continue;
+    }
     ch = getchar();
     // Restore original terminal settings
     tcsetattr(STDIN_FILENO, TCSANOW, &old_settings);
     return ch;
 }
 
-int init_game(){
+void clear_input(void){
+    int c;
+    while((c=getchar()) != '\n' && c != EOF);
+}
+
+int load_best(void){
+    int best=0;
+    FILE *fp = fopen("data.txt","r");
+    if(fp == NULL){
+        return best;
+    }
+    fscanf(fp,SCORE_FMT,&best);
+    fclose(fp);
+    return best;
+}
+
+int save_best(int best){
+    FILE *fp=fopen("data.txt","w");
+    if(fp == NULL){
+        return -1;
+    }
+    fprintf(fp,SCORE_FMT,best);
+    fclose(fp);
+    return 0;
+}
+
+int init_game(int best_score){
     int random_num,min=1,max=100;
     char ch;
     srand(time(NULL));    
     printf("##########  Number Guessing Game  ##########\n");
+    if(best_score != 0){
+        printf("Best score = %d, (Lowest attempt is the best score)\n",best_score);
+    }
     printf("c to change range. Default range is 1 to 100, if you don't want to change press any key\n");
     ch = lin_getch();
     printf("%c\n",ch);
@@ -47,8 +82,8 @@ int init_game(){
     return random_num;
 }
 
-void find_random(int random_num){
-    int guess;
+void find_random(int random_num, int best_score){
+    int guess,try=1;
     do{
         printf("Enter number : ");
         while(scanf("%d",&guess) != 1){
@@ -57,11 +92,16 @@ void find_random(int random_num){
                 continue;
         }
         if(guess < random_num){
-            printf("Too low, Try again\n");
+            printf("Too low, attempt no : %d\n",try++);
         }else if(guess > random_num){
-            printf("Too high, Try again\n");
+            printf("Too high, attempt no : %d\n",try++);
         }else {
-            printf("You find it....\n");
+            if(try < best_score || best_score == 0){
+                if(save_best(try) != 0){
+                    printf("Failed to save best score");
+                }
+            }
+            printf("You find on attend no : %d....\n",try);
         }
     }while(guess != random_num);
 }
