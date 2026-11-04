@@ -1,4 +1,4 @@
 * Count attempts and show “You found it in 7 tries!” --feature added.
 * Add “play again? (y/n)” --feature added.
-* Limit the number of guesses
+* Limit the number of guesses 
 * Store the best score in a file, which is good practice for file handling before the to-do app

@@ -7,9 +7,15 @@
 #define SCORE_FILE "data.txt"
 #define SCORE_FMT "best score : %d"
 
+void clear_input(void){
+    int c;
+    while((c=getchar()) != '\n' && c != EOF);
+}
+
 int lin_getch() {
     struct termios old_settings, new_settings;
     char ch;
+    static int fn_call=0;
     // Save current terminal settings
     tcgetattr(STDIN_FILENO, &old_settings);
     // Copy the current settings
@@ -19,19 +25,14 @@ int lin_getch() {
     // Apply new settings immediately
     tcsetattr(STDIN_FILENO, TCSANOW, &new_settings);
     printf("Press any key: ");
-    // Read one character immediately
-    while(getchar() != '\n'){
-        continue;
+    if(fn_call == 1){
+        clear_input();
     }
     ch = getchar();
     // Restore original terminal settings
     tcsetattr(STDIN_FILENO, TCSANOW, &old_settings);
+    fn_call=1;
     return ch;
-}
-
-void clear_input(void){
-    int c;
-    while((c=getchar()) != '\n' && c != EOF);
 }
 
 int load_best(void){

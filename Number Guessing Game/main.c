@@ -14,7 +14,6 @@ int main(){
         find_random(random_num,best_score);
         printf("\n\nDo you want to play again? (y/n) : ");
         scanf(" %c",&ch);
-        clear_input();
     }while(ch == 'y' || ch == 'Y');
     printf("Program ended...\n");
 }
