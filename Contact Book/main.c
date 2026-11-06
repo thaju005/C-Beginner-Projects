@@ -17,7 +17,7 @@ int do_action(int ch){
 
 int main(void){
     int ch=NO_CHOICE,scan_res,temp_char;
-    do {
+    do{
         //MENU
         printf("\n____Contact book____\n");
         printf("1. Add contact\n");
