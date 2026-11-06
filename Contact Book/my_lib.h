@@ -3,6 +3,9 @@
 #ifndef MY_LIB_H
 #define MY_LIB_H
 
+#define NAME_LIMIT 61
+#define PHONE_LIMIT 21
+
 typedef enum{
     OPT_ADD,
     OPT_VIEW,
@@ -17,11 +20,16 @@ typedef enum{
     ACTION_EXIT,
     ACTION_OK,
     FILE_OPEN_ERROR,
-    CONTACT_SUCCESS
+    CONTACT_SUCCESS,
+    BUFFER_EMPTY,
+    BUFFER_NOT_EMPTY,
+    NAME_READ_FAIL,
+    PHONE_READ_FAIL
 }status_codes;
 
 #endif
 
 void clear_screen();
-status_codes createContact();
+status_codes createContact(void);
+status_codes clear_buffer(void);
 //

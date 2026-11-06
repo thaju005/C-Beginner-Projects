@@ -48,25 +48,30 @@ int main(void){
         //ACTION FUNCTION CALL
         switch(do_action(ch)){
             case ACTION_INVALID:
-                clear_screen();
                 printf("Invalid Option...");
                 break;
             case ACTION_EXIT:
                 printf("Program ended...");
                 break;
             case ACTION_OK:
-                clear_screen();
                 printf("Operation Successfull...");
                 break;
             case FILE_OPEN_ERROR:
-                clear_screen();
                 printf("File creation error");
                 break;
             case CONTACT_SUCCESS:
-                clear_screen();
                 printf("New Contact Added");
                 break;
+            case BUFFER_NOT_EMPTY:
+                printf("Name or Phone number exceeded limit, please enter name which have length <= %d and phone number <= %d",(NAME_LIMIT - 1),(PHONE_LIMIT -1 ));
+                break;
+            case NAME_READ_FAIL:
+                printf("Contact name is failed to read..");
+                break;
+            case PHONE_READ_FAIL:
+                printf("Phone number faild to read...");
         }
+        clear_screen();
     }while(ch != OPT_EXIT);
     printf("\n\n");
     return 0;
