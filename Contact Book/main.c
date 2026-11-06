@@ -6,11 +6,12 @@
 int do_action(int ch){
     switch(ch){
         case OPT_ADD: return createContact();  
-        case OPT_VIEW:
+        case OPT_VIEW: return viewContact();
         case OPT_SEARCH:
         case OPT_EDIT:
         case OPT_REMOVE: return ACTION_OK;
         case OPT_EXIT: return ACTION_EXIT;
+        case CLR_SCREEN: clear_screen(); return ACTION_OK;
         default: return ACTION_INVALID;
     }
 }
@@ -26,6 +27,7 @@ int main(void){
         printf("4. Edit contact\n");
         printf("5. Remove contact\n");
         printf("6. Exit\n");
+        printf("7. Clear Screen\n");
         printf("----------------\nEnter Your Choice : ");
         scan_res=scanf("%d",&ch);
         if(scan_res == 1){
@@ -57,10 +59,7 @@ int main(void){
                 printf("Operation Successfull...");
                 break;
             case FILE_OPEN_ERROR:
-                printf("File creation error");
-                break;
-            case CONTACT_SUCCESS:
-                printf("New Contact Added");
+                printf("Failed to open file...");
                 break;
             case BUFFER_NOT_EMPTY:
                 printf("Name or Phone number exceeded limit, please enter name which have length <= %d and phone number <= %d",(NAME_LIMIT - 1),(PHONE_LIMIT -1 ));
@@ -70,8 +69,8 @@ int main(void){
                 break;
             case PHONE_READ_FAIL:
                 printf("Phone number faild to read...");
+                break;
         }
-        clear_screen();
     }while(ch != OPT_EXIT);
     printf("\n\n");
     return 0;

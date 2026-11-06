@@ -5,6 +5,7 @@
 
 #define NAME_LIMIT 61
 #define PHONE_LIMIT 21
+#define CONTACT_FILE "contact_data.txt"
 
 typedef enum{
     OPT_ADD,
@@ -12,7 +13,8 @@ typedef enum{
     OPT_SEARCH,
     OPT_EDIT,
     OPT_REMOVE,
-    OPT_EXIT
+    OPT_EXIT,
+    CLR_SCREEN
 }menu_actions;
 
 typedef enum{
@@ -20,7 +22,6 @@ typedef enum{
     ACTION_EXIT,
     ACTION_OK,
     FILE_OPEN_ERROR,
-    CONTACT_SUCCESS,
     BUFFER_EMPTY,
     BUFFER_NOT_EMPTY,
     NAME_READ_FAIL,
@@ -32,4 +33,5 @@ typedef enum{
 void clear_screen();
 status_codes createContact(void);
 status_codes clear_buffer(void);
+status_codes viewContact(void);
 //

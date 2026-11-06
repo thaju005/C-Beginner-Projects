@@ -19,7 +19,7 @@ status_codes clear_buffer(void){
 }
 
 status_codes createContact(void){
-    FILE *fp = fopen("contact_data.txt","a");
+    FILE *fp = fopen(CONTACT_FILE,"a");
     struct contact c;
     status_codes name_limit_exceed=BUFFER_EMPTY,phone_limit_exceed=BUFFER_EMPTY;
     if(fp == NULL){
@@ -49,5 +49,38 @@ status_codes createContact(void){
     c.phone_no[strcspn(c.phone_no,"\n")]='\0';
     fprintf(fp,"%s | %s\n",c.name,c.phone_no);
     fclose(fp);
-    return CONTACT_SUCCESS;
+    return ACTION_OK;
+}
+
+
+status_codes viewContact(void){
+    FILE *fp=fopen(CONTACT_FILE,"r");
+    char buffer[NAME_LIMIT + PHONE_LIMIT];
+    int SiNo=0;
+    char *separator,*phone_start;
+    if(fp == NULL){
+        return FILE_OPEN_ERROR;
+    }
+    while(fgets(buffer,sizeof(buffer),fp) != NULL){
+        buffer[strcspn(buffer,"\n")]='\0';
+        if(buffer[0] == '\0'){
+            continue;
+        }
+
+        separator = strstr(buffer," | ");
+        if(separator == NULL){
+            continue;
+        }
+
+        phone_start=separator+3;
+        *separator='\0';
+        printf("##Person : %d\n",++SiNo);
+        printf("Name : %s\n",buffer);
+        printf("Phone no : %s\n\n",phone_start);
+    }
+    if(SiNo == 0){
+        printf("No contact found...\n\n");
+    }
+    fclose(fp);
+    return ACTION_OK;
 }
