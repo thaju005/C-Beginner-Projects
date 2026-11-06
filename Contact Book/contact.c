@@ -54,6 +54,7 @@ status_codes createContact(void){
 
 
 status_codes viewContact(void){
+    clear_screen();
     FILE *fp=fopen(CONTACT_FILE,"r");
     char buffer[NAME_LIMIT + PHONE_LIMIT];
     int SiNo=0;
