@@ -62,7 +62,7 @@ int main(void){
                 ch = OPT_EXIT;
                 break;
             case ACTION_OK:
-                printf("Operation Successfull...");
+                printf("\nOperation Successfull...");
                 break;
             case FILE_OPEN_ERROR:
                 clear_screen();

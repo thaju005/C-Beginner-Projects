@@ -126,10 +126,11 @@ status_codes searchContact(void){
     search[strcspn(search,"\n")]='\0';
     string_tolower(search);
     while(fgets(file_buffer,sizeof(file_buffer),fp) != NULL){
+        file_buffer[strcspn(file_buffer,"\n")]='\0';
+        s_index=strcspn(file_buffer,"|");
+        file_buffer[s_index]='\0';
         if(opt == 1){
             string_tolower(file_buffer);
-            s_index=strcspn(file_buffer,"|");
-            file_buffer[s_index]='\0';
             if(strlen(file_buffer) < strlen(search)){
                 continue;
             }
@@ -137,20 +138,17 @@ status_codes searchContact(void){
                 continue;
             }
         }else if(opt == 2){
-            s_index=strcspn(file_buffer,"|");
-            phone=&file_buffer[s_index+1];
+            phone=&file_buffer[s_index+2];
             if(strlen(phone) < strlen(search)){
-                printf("len not match\n");
                 continue;
             }
             if(matching(search,phone) == FAIL){
-                printf("num not match\n");
                 continue;
             }
         }
         printf("\n##Matching %d\n",++found);
         printf("Name : %s\n",file_buffer);
-        printf("Phone : %s\n",&file_buffer[s_index+1]);
+        printf("Phone : %s\n",phone);
     }
     if(found == 0){
         printf("Didn't found any matching person...!!\n");
@@ -161,9 +159,7 @@ status_codes searchContact(void){
 
 status_codes matching(char *s1, char *s2){
     while(*s1 != '\0'){
-        printf("%s , %s\n",s1,s2);
         if(*s1 != *s2) {
-            printf("%c , %c\n",*s1,*s2);
             return FAIL;
         }
         s1++;
