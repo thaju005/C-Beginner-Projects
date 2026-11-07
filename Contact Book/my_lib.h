@@ -25,7 +25,9 @@ typedef enum{
     BUFFER_EMPTY,
     BUFFER_NOT_EMPTY,
     NAME_READ_FAIL,
-    PHONE_READ_FAIL
+    PHONE_READ_FAIL,
+    FAIL,
+    PASS
 }status_codes;
 
 #endif
@@ -34,4 +36,6 @@ void clear_screen();
 status_codes createContact(void);
 status_codes clear_buffer(void);
 status_codes viewContact(void);
+status_codes searchContact(void);
+status_codes matching(char*,char*);
 //

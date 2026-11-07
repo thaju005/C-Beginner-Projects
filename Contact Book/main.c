@@ -5,13 +5,18 @@
 
 int do_action(int ch){
     switch(ch){
-        case OPT_ADD: return createContact();  
-        case OPT_VIEW: return viewContact();
+        case OPT_ADD: 
+            clear_screen();
+            return createContact();  
+        case OPT_VIEW: 
+            clear_screen();
+            return viewContact();
         case OPT_SEARCH:
+            clear_screen();
+            return searchContact();
         case OPT_EDIT:
         case OPT_REMOVE: return ACTION_OK;
         case OPT_EXIT: return ACTION_EXIT;
-        case CLR_SCREEN: clear_screen(); return ACTION_OK;
         default: return ACTION_INVALID;
     }
 }
@@ -27,7 +32,6 @@ int main(void){
         printf("4. Edit contact\n");
         printf("5. Remove contact\n");
         printf("6. Exit\n");
-        printf("7. Clear Screen\n");
         printf("----------------\nEnter Your Choice : ");
         scan_res=scanf("%d",&ch);
         if(scan_res == 1){
@@ -50,24 +54,30 @@ int main(void){
         //ACTION FUNCTION CALL
         switch(do_action(ch)){
             case ACTION_INVALID:
+                clear_screen();
                 printf("Invalid Option...");
                 break;
             case ACTION_EXIT:
                 printf("Program ended...");
+                ch = OPT_EXIT;
                 break;
             case ACTION_OK:
                 printf("Operation Successfull...");
                 break;
             case FILE_OPEN_ERROR:
+                clear_screen();
                 printf("Failed to open file...");
                 break;
             case BUFFER_NOT_EMPTY:
+                clear_screen();
                 printf("Name or Phone number exceeded limit, please enter name which have length <= %d and phone number <= %d",(NAME_LIMIT - 1),(PHONE_LIMIT -1 ));
                 break;
             case NAME_READ_FAIL:
+                clear_screen();
                 printf("Contact name is failed to read..");
                 break;
             case PHONE_READ_FAIL:
+                clear_screen();
                 printf("Phone number faild to read...");
                 break;
         }
