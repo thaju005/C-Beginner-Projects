@@ -94,15 +94,15 @@ status_codes viewContact(void){
 
 status_codes searchContact(void){
     FILE *fp=fopen(CONTACT_FILE,"r");
-    int opt=0,scan_res=0,found=0,s_index=0;
-    char search[NAME_LIMIT > PHONE_LIMIT ? NAME_LIMIT : PHONE_LIMIT],temp_char,file_buffer[NAME_LIMIT+PHONE_LIMIT+3];
-    char *phone;
+    int opt=0,scan_res=0,found=0,temp_char;
+    char search[NAME_LIMIT > PHONE_LIMIT ? NAME_LIMIT : PHONE_LIMIT],file_buffer[NAME_LIMIT+PHONE_LIMIT+3],temp_buffer[NAME_LIMIT+PHONE_LIMIT+3];
+    char *phone,*s_index;
     if(fp == NULL){
         return FILE_OPEN_ERROR;
     }
     printf("How do you want to search contact\n1, By name\n2, By number\nChoice : ");
     scan_res=scanf("%d",&opt);
-    while((temp_char=getchar() != '\n') && temp_char != EOF){
+    while(((temp_char=getchar()) != '\n') && temp_char != EOF){
         continue;
     }
     if(scan_res != 1){
@@ -127,9 +127,14 @@ status_codes searchContact(void){
     string_tolower(search);
     while(fgets(file_buffer,sizeof(file_buffer),fp) != NULL){
         file_buffer[strcspn(file_buffer,"\n")]='\0';
-        s_index=strcspn(file_buffer,"|");
-        file_buffer[s_index]='\0';
+        s_index=strstr(file_buffer," | ");
+        if(s_index == NULL){
+            continue;
+        }
+        *s_index='\0';
+        phone=s_index+3;
         if(opt == 1){
+            strcpy(temp_buffer,file_buffer);
             string_tolower(file_buffer);
             if(strlen(file_buffer) < strlen(search)){
                 continue;
@@ -137,8 +142,8 @@ status_codes searchContact(void){
             if(matching(search,file_buffer) == FAIL){
                 continue;
             }
+            strcpy(file_buffer,temp_buffer);
         }else if(opt == 2){
-            phone=&file_buffer[s_index+2];
             if(strlen(phone) < strlen(search)){
                 continue;
             }
@@ -158,12 +163,8 @@ status_codes searchContact(void){
 }
 
 status_codes matching(char *s1, char *s2){
-    while(*s1 != '\0'){
-        if(*s1 != *s2) {
-            return FAIL;
-        }
-        s1++;
-        s2++;
+    if(strstr(s2,s1) == NULL){
+        return FAIL;
     }
     return PASS;
 }
