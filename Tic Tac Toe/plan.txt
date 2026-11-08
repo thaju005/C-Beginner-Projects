@@ -1,0 +1,9 @@
+Build landing menu
+    -New game
+    -Load game (while playing clicking 0 will save the and go back to main menu)
+    -High score
+    -Help
+    -Exit
+
+Show tic tac toe board
+On that page show players name
