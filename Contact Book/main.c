@@ -17,7 +17,9 @@ int do_action(int ch){
         case OPT_EDIT:
             clear_screen();
             return editContact();
-        case OPT_REMOVE: return ACTION_OK;
+        case OPT_REMOVE: 
+            clear_screen();
+            return removeContact();
         case OPT_EXIT: return ACTION_EXIT;
         default: return ACTION_INVALID;
     }
@@ -81,6 +83,14 @@ int main(void){
             case PHONE_READ_FAIL:
                 clear_screen();
                 printf("Phone number faild to read...");
+                break;
+            case INVALID_PERSON:
+                clear_screen();
+                printf("Invalid person...");
+                break;
+            case FAIL:
+                clear_screen();
+                printf("Something went wrong...");
                 break;
         }
     }while(ch != OPT_EXIT);

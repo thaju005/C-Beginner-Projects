@@ -173,18 +173,20 @@ status_codes matching(char *s1, char *s2){
 }
 
 status_codes editContact(void){
-    int contact,total_contact=0,sino=0;
-    char buffer[NAME_LIMIT+PHONE_LIMIT+3],temp_char;
+    int contact,total_contact=0,sino=0,temp_char;
+    char buffer[NAME_LIMIT+PHONE_LIMIT+3];
     FILE *contact_data,*temp_data;
     struct contact c;
     viewContact(&total_contact);
     printf("Which person do you want to edit, enter number : ");
-    scanf("%d",&contact);
+    if(scanf("%d",&contact) != 1){
+        return ACTION_INVALID;
+    }
     while(((temp_char=getchar()) != '\n') && temp_char != EOF){
         continue;
     }
     if(contact < 1 || contact > total_contact){
-        printf("Invalid person number");
+        return INVALID_PERSON;
     }
 
     printf("Enter edited name : ");
@@ -213,10 +215,16 @@ status_codes editContact(void){
     temp_data = fopen(TEMP_FILE,"w");
     if(temp_data == NULL){
         printf("Failed to open temp file...");
+        if(contact_data == NULL){
+            fclose(contact_data);
+        }
         return FILE_OPEN_ERROR;
     }
 
     while((fgets(buffer,sizeof(buffer),contact_data) != NULL)){
+        if(strstr(buffer," | ") == NULL){
+            continue;
+        }
         if(++sino == contact){
             fprintf(temp_data,"%s | %s\n",c.name,c.phone_no);
             continue;
@@ -227,6 +235,57 @@ status_codes editContact(void){
     fclose(contact_data);
     fclose(temp_data);
     remove(CONTACT_FILE);
-    rename(TEMP_FILE,CONTACT_FILE);
+    if(rename(TEMP_FILE,CONTACT_FILE) != 0){
+        printf("Failed to rename file..");
+        return FAIL;
+    }
+    return ACTION_OK;
+}
+
+status_codes removeContact(void){
+    int contact,total_contact=0,sino=0,temp_char;
+    char buffer[NAME_LIMIT+PHONE_LIMIT+3];
+    FILE *contact_data,*temp_data;
+    viewContact(&total_contact);
+    printf("Which person do you want to edit, enter number : ");
+    if(scanf("%d",&contact) != 1){
+        return ACTION_INVALID;
+    }
+    while(((temp_char=getchar()) != '\n') && temp_char != EOF){
+        continue;
+    }
+    if(contact < 1 || contact > total_contact){
+        return INVALID_PERSON;
+    }
+
+
+    contact_data = fopen(CONTACT_FILE,"r");
+    if(contact_data == NULL){
+        printf("Failed to open contact file...");
+        return FILE_OPEN_ERROR;
+    }
+    temp_data = fopen(TEMP_FILE,"w");
+    if(temp_data == NULL){
+        printf("Failed to open temp file...");
+        if(contact_data == NULL){
+            fclose(contact_data);
+        }
+        return FILE_OPEN_ERROR;
+    }
+
+    while((fgets(buffer,sizeof(buffer),contact_data) != NULL)){
+        if(++sino == contact){
+            continue;
+        }
+        fputs(buffer,temp_data);
+    }
+
+    fclose(contact_data);
+    fclose(temp_data);
+    remove(CONTACT_FILE);
+    if(rename(TEMP_FILE,CONTACT_FILE) != 0){
+        printf("Failed to rename file..");
+        return FAIL;
+    }
     return ACTION_OK;
 }
