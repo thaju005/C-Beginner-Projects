@@ -60,7 +60,7 @@ status_codes createContact(void){
 }
 
 
-status_codes viewContact(void){
+status_codes viewContact(int *total_contact){
     FILE *fp=fopen(CONTACT_FILE,"r");
     char buffer[NAME_LIMIT + PHONE_LIMIT + 3];
     int SiNo=0;
@@ -87,6 +87,9 @@ status_codes viewContact(void){
     }
     if(SiNo == 0){
         printf("No contact found...\n\n");
+    }
+    if(total_contact != NULL){
+        *total_contact=SiNo;
     }
     fclose(fp);
     return ACTION_OK;
@@ -167,4 +170,63 @@ status_codes matching(char *s1, char *s2){
         return FAIL;
     }
     return PASS;
+}
+
+status_codes editContact(void){
+    int contact,total_contact=0,sino=0;
+    char buffer[NAME_LIMIT+PHONE_LIMIT+3],temp_char;
+    FILE *contact_data,*temp_data;
+    struct contact c;
+    viewContact(&total_contact);
+    printf("Which person do you want to edit, enter number : ");
+    scanf("%d",&contact);
+    while(((temp_char=getchar()) != '\n') && temp_char != EOF){
+        continue;
+    }
+    if(contact < 1 || contact > total_contact){
+        printf("Invalid person number");
+    }
+
+    printf("Enter edited name : ");
+    if(fgets(c.name,sizeof(c.name),stdin) == NULL){
+        return NAME_READ_FAIL;
+    }
+    if(c.name[strcspn(c.name,"\n")] == '\0'){
+        clear_buffer();
+    }
+
+    printf("Enter edited phone no : ");
+    if(fgets(c.phone_no,sizeof(c.phone_no),stdin) == NULL){
+        return NAME_READ_FAIL;
+    }
+    if(c.phone_no[strcspn(c.phone_no,"\n")] == '\0'){
+        clear_buffer();
+    }
+    c.name[strcspn(c.name,"\n")]='\0'; 
+    c.phone_no[strcspn(c.phone_no,"\n")]='\0';
+
+    contact_data = fopen(CONTACT_FILE,"r");
+    if(contact_data == NULL){
+        printf("Failed to open contact file...");
+        return FILE_OPEN_ERROR;
+    }
+    temp_data = fopen(TEMP_FILE,"w");
+    if(temp_data == NULL){
+        printf("Failed to open temp file...");
+        return FILE_OPEN_ERROR;
+    }
+
+    while((fgets(buffer,sizeof(buffer),contact_data) != NULL)){
+        if(++sino == contact){
+            fprintf(temp_data,"%s | %s\n",c.name,c.phone_no);
+            continue;
+        }
+        fputs(buffer,temp_data);
+    }
+
+    fclose(contact_data);
+    fclose(temp_data);
+    remove(CONTACT_FILE);
+    rename(TEMP_FILE,CONTACT_FILE);
+    return ACTION_OK;
 }

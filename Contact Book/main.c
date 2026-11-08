@@ -10,11 +10,13 @@ int do_action(int ch){
             return createContact();  
         case OPT_VIEW: 
             clear_screen();
-            return viewContact();
+            return viewContact(NULL);
         case OPT_SEARCH:
             clear_screen();
             return searchContact();
         case OPT_EDIT:
+            clear_screen();
+            return editContact();
         case OPT_REMOVE: return ACTION_OK;
         case OPT_EXIT: return ACTION_EXIT;
         default: return ACTION_INVALID;

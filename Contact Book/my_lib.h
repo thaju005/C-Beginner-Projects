@@ -6,6 +6,7 @@
 #define NAME_LIMIT 61
 #define PHONE_LIMIT 21
 #define CONTACT_FILE "contact_data.txt"
+#define TEMP_FILE "temp_data.txt"
 
 typedef enum{
     OPT_ADD,
@@ -35,7 +36,8 @@ typedef enum{
 void clear_screen();
 status_codes createContact(void);
 status_codes clear_buffer(void);
-status_codes viewContact(void);
+status_codes viewContact(int*);
 status_codes searchContact(void);
 status_codes matching(char*,char*);
+status_codes editContact(void);
 //
