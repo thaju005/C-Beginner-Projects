@@ -41,11 +41,13 @@ status_codes new_game(void){
     FILE *current_file=reset_current_game_file();
     char scanf_string[6];
     player_data p1,p2;
+    int random=1,new_game=1;
     if(current_file == NULL){
         return FILE_OPEN_ERROR;
     }
     clear_screen();
-    
+
+    printf("A player will be selected randomly to start game!!!\n");
     snprintf(scanf_string,sizeof(scanf_string),"%%%ds",PLAYER_NAME_SIZE-1);
     printf("Enter name for player 1 : ");
     scanf(scanf_string,p1.name);
@@ -54,5 +56,20 @@ status_codes new_game(void){
     scanf(scanf_string,p2.name);
     clear_buffer(); 
 
+    //Select a person to start, That person will start with x
+    random=generate_random_num();
+
+    start_game(p1.name,p2.name,random,new_game);
+    
+
     return SUCCESS;
+}
+
+void start_game(char p1[],char p2[],int r,int new_game){
+    int ttt_screen_return;
+    char ttt_board[3][3]={{0}};
+    //Calling tic tac toe board screen
+    do{
+        ttt_screen_return=ttt_board_screen(p1,p2,r,ttt_board,new_game);
+    }while(ttt_screen_return != 11);
 }
