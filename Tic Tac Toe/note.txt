@@ -1,0 +1,1 @@
+current game file -> contain the data that saved on the middle of the game, used to restore the previous game.

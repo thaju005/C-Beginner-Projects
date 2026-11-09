@@ -1,6 +1,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void clear_screen(void){
     system("clear");
@@ -62,4 +63,15 @@ int menu_getch(void){
     // Restore original settings
     tcsetattr(STDIN_FILENO, TCSANOW, &orig);
     return result;
+}
+
+int clear_buffer(void) {
+    int c,empty=0;
+    while((c=getchar()) != '\n' && c != EOF){
+        if(empty == 0){
+            empty=1;
+        }
+        continue;
+    }
+    return empty;
 }
