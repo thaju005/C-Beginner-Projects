@@ -31,7 +31,7 @@ void main_menu(int arr_pos){
 
 //Board Screen
 int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[3][3],int new_game){
-    int input=11;
+    int input=11; 
     clear_screen();
     show_player_name(player1,player2,starting,new_game);
     show_board(ttt_board);
@@ -39,6 +39,9 @@ int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[
     printf("enter input : ");
     scanf("%d",&input);
     clear_buffer();
+    if(input > 0 && input < 10){
+        update_board(input,ttt_board);
+    }
     return input;
 }
 
