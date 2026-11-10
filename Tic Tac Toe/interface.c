@@ -30,7 +30,7 @@ void main_menu(int arr_pos){
 }
 
 //Board Screen
-int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[3][3],int new_game){
+int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[3][3],int new_game,int flip_symbol, char symbol[2]){
     int input=11; 
     clear_screen();
     show_player_name(player1,player2,starting,new_game);
@@ -40,7 +40,7 @@ int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[
     scanf("%d",&input);
     clear_buffer();
     if(input > 0 && input < 10){
-        update_board(input,ttt_board);
+        update_board(input,ttt_board,flip_symbol,symbol);
     }
     return input;
 }
@@ -74,8 +74,10 @@ void show_board(char ttt_board[3][3]){
     for(i=0;i<3;i++){
         for(j=0;j<3;j++){
             if(ttt_board[i][j] == 0){
-                printf(" 0 ");
+                printf(" - ");
+                continue;
             }
+            printf(" %c ",ttt_board[i][j]);
         }
         printf("\n");
     }

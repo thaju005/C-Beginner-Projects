@@ -66,21 +66,28 @@ status_codes new_game(void){
 }
 
 void start_game(char p1[],char p2[],int r,int new_game){
-    int ttt_screen_return,staring_player=r;
-    char ttt_board[3][3]={{0}};
+    int ttt_screen_return,flip_symbol=1;
+    char ttt_board[3][3]={{0}},symbol[2];
+    symbol[0]='x';
+    symbol[1]='0';
+
     //Calling tic tac toe board screen
     do{
-        ttt_screen_return=ttt_board_screen(p1,p2,r,ttt_board,new_game);
+        ttt_screen_return=ttt_board_screen(p1,p2,r,ttt_board,new_game,flip_symbol,symbol);
+        flip_symbol = flip_symbol == 1 ? 2 : 1;
     }while(ttt_screen_return != 11);
 }
 
-void update_board(int pos,char ttt_board[][3]){
+void update_board(int pos,char ttt_board[][3],int flip_symbol, char symbol[2]){
     int k=1;
+    printf("flip_symbol %d, Pos %d - update board\n",flip_symbol,pos);
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             if(k == pos){
-                ttt_board[i][j];
+                ttt_board[i][j]=symbol[flip_symbol-1];
             }
+            k++;
         }
     }
+    getchar();
 }
