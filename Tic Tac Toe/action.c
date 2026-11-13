@@ -74,6 +74,7 @@ void start_game(char p1[],char p2[],int r,int new_game){
     //Calling tic tac toe board screen
     do{
         ttt_screen_return=ttt_board_screen(p1,p2,r,ttt_board,new_game,flip_symbol,symbol);
+        r = r == 1 ? 2 : 1;
         flip_symbol = flip_symbol == 1 ? 2 : 1;
     }while(ttt_screen_return != 11);
 }

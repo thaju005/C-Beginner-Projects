@@ -32,16 +32,19 @@ void main_menu(int arr_pos){
 //Board Screen
 int ttt_board_screen(char player1[],char player2[],int starting, char ttt_board[3][3],int new_game,int flip_symbol, char symbol[2]){
     int input=11; 
+    static int fn_call=0;
     clear_screen();
-    show_player_name(player1,player2,starting,new_game);
+    show_player_name(player1,player2,starting,new_game,fn_call);
     show_board(ttt_board);
     show_instruction();
-    printf("enter input : ");
+    
+    printf("%s's turn : ",starting == 1 ? player1 : player2);
     scanf("%d",&input);
     clear_buffer();
     if(input > 0 && input < 10){
         update_board(input,ttt_board,flip_symbol,symbol);
     }
+    fn_call=1;
     return input;
 }
 
@@ -49,7 +52,7 @@ void show_instruction(){
     printf("enter 'x' to go back\n");
 }
 
-void show_player_name(char player1[],char player2[],int starting,int new_game){
+void show_player_name(char player1[],char player2[],int starting,int new_game,int ttt_board_screen_call){
     static int x=0;
     if(new_game == 1){
         x=0;
@@ -60,7 +63,7 @@ void show_player_name(char player1[],char player2[],int starting,int new_game){
         return;
     }
     //Show this message only on the starting...
-    if(starting == 1){
+    if(starting == 1 && ttt_board_screen_call == 0){
         printf("%s will start with 'x'\n",player1);
         x++;
     }else{

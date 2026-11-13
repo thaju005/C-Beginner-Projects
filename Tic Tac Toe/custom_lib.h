@@ -42,7 +42,7 @@ int clear_buffer(void);
 int menu_getch(void);
 void main_menu(int);
 int ttt_board_screen(char*,char*,int,char[3][3],int,int,char[2]);
-void show_player_name(char*,char*,int,int);
+void show_player_name(char*,char*,int,int,int);
 void show_board(char[3][3]);
 void show_instruction();
 
