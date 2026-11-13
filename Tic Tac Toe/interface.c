@@ -72,13 +72,14 @@ void show_player_name(char player1[],char player2[],int starting,int new_game){
 void show_board(char ttt_board[3][3]){
     int i,j;
     for(i=0;i<3;i++){
+        printf("\n|-----------------|\n|");
         for(j=0;j<3;j++){
             if(ttt_board[i][j] == 0){
-                printf(" - ");
+                printf("  -  |");
                 continue;
             }
-            printf(" %c ",ttt_board[i][j]);
+            printf("  %c  |",ttt_board[i][j]);
         }
-        printf("\n");
     }
+    printf("\n|-----------------|\n");
 }

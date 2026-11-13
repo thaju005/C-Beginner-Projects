@@ -80,7 +80,6 @@ void start_game(char p1[],char p2[],int r,int new_game){
 
 void update_board(int pos,char ttt_board[][3],int flip_symbol, char symbol[2]){
     int k=1;
-    printf("flip_symbol %d, Pos %d - update board\n",flip_symbol,pos);
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             if(k == pos){
@@ -89,5 +88,4 @@ void update_board(int pos,char ttt_board[][3],int flip_symbol, char symbol[2]){
             k++;
         }
     }
-    getchar();
 }

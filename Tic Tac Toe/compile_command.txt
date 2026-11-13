@@ -1,0 +1,1 @@
+gcc -Wall -Wextra main.c file.c interface.c terminal.c help.c action.c additional_functions.c
